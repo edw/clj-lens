@@ -1,6 +1,6 @@
 # Clj-lens: a tool for focusing on values
 
-## Todo list
+## Items for consideration
 
 * Implement insert
 * Implement remove
