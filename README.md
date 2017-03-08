@@ -6,6 +6,9 @@
 * Implement remove
 * Implement prepend
 * Implement append
+* Implement subsequence
+* Implement concatenate
+* Identify which operations are primitive and which are derived
 
 ## Examples
 
