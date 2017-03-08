@@ -1,28 +1,29 @@
-(ns lens.core)
+(ns clj-lens.core
+  (:refer-clojure :exclude [get update]))
 
 (defprotocol AFocusable
   "Something which can be focused upon"
-  (fget [x spec] "Get value")
-  (fupdate [x spec f] "Update value"))
+  (get [x spec] "Get value")
+  (update [x spec f] "Update value"))
 
 (extend clojure.lang.LongRange
   AFocusable
-  {:fget
+  {:get
    (fn [x [spec-el & spec-rest]]
-     (fget (nth x spec-el) spec-rest))})
+     (get (nth x spec-el) spec-rest))})
 
 (extend clojure.lang.IPersistentMap
   AFocusable
-  {:fget (fn [m [spec-el & spec-rest]]
-           (fget (get m spec-el) spec-rest))
-   :fupdate (fn [m [spec-el & spec-rest] f]
-              (if (not-empty spec-rest)
-                (update m spec-el #(fupdate % spec-rest f))
-                (update m spec-el f)))})
+  {:get (fn [m [spec-el & spec-rest]]
+          (get (clojure.core/get m spec-el) spec-rest))
+   :update (fn [m [spec-el & spec-rest] f]
+             (if (not-empty spec-rest)
+               (clojure.core/update m spec-el #(update % spec-rest f))
+               (clojure.core/update m spec-el f)))})
 
 (extend java.lang.String
   AFocusable
-  {:fget
+  {:get
    (fn [s spec]
      (cond (empty? spec)
            s
@@ -30,7 +31,7 @@
            (.charAt s (first spec))
            :else
            (throw (Exception. "Cannot focus beyond a character"))))
-   :fupdate
+   :update
    (fn [s spec f]
      (cond (empty? s)
            (f s)
@@ -42,22 +43,22 @@
 
 (extend clojure.lang.IPersistentVector
   AFocusable
-  {:fget
-   (fn [coll [spec-el spec-rest]]
-     (fget (get coll spec-el) spec-rest))
-   :fupdate
-   (fn [coll [spec-el spec-rest] f]
+  {:get
+   (fn [coll [spec-el & spec-rest]]
+     (get (clojure.core/get coll spec-el) spec-rest))
+   :update
+   (fn [coll [spec-el & spec-rest] f]
      (if (not-empty spec-rest)
-       (assoc coll spec-el (fupdate (get coll spec-el) spec-rest f))
-       (assoc coll spec-el (f (get coll spec-el)))))})
+       (assoc coll spec-el (update (clojure.core/get coll spec-el) spec-rest f))
+       (assoc coll spec-el (f (clojure.core/get coll spec-el)))))})
 
 (extend java.lang.Long
   AFocusable
-  {:fget
+  {:get
    (fn [x spec] (if (not-empty spec)
                  (throw (Exception. "Long does not accept non-nil spec"))
                  x))
-   :fupdate
+   :update
    (fn [x spec f] (if (not-empty spec)
                    (throw (Exception. "Long does not accept non-nil spec"))
                    (f x)))})
