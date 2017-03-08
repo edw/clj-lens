@@ -49,8 +49,13 @@
 (extend clojure.lang.IPersistentVector
   AFocusable
   {:get
-   (fn [coll [spec-el & spec-rest]]
-     (get (clojure.core/get coll spec-el) spec-rest))
+   (fn [coll specs]
+     (cond (empty? specs)
+           coll
+           (= 1 (count specs))
+           (clojure.core/get coll (first specs))
+           :else
+           (get (clojure.core/get coll (first specs)) (rest specs))))
    :update
    (fn [coll [spec-el & spec-rest] f]
      (if (not-empty spec-rest)
