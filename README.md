@@ -3,6 +3,7 @@
 ## Todo list
 
 * Implement insert
+* Implement remove
 * Implement prepend
 * Implement append
 
