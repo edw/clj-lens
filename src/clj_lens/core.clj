@@ -4,7 +4,7 @@
 (defprotocol AFocusable
   "Something which can be focused upon"
   (get [x spec] "Get value")
-  (update [x spec f] "Update value"))
+  (update* [x spec f] "Update value"))
 
 (extend clojure.lang.LongRange
   AFocusable
@@ -17,10 +17,10 @@
   {:get
    (fn [m [spec-el & spec-rest]]
      (get (clojure.core/get m spec-el) spec-rest))
-   :update
+   :update*
    (fn [m [spec-el & spec-rest] f]
      (if (not-empty spec-rest)
-       (clojure.core/update m spec-el #(update % spec-rest f))
+       (clojure.core/update m spec-el #(update* % spec-rest f))
        (clojure.core/update m spec-el f)))})
 
 (defn- replace-at [s i f]
@@ -36,7 +36,7 @@
            (.charAt s (first spec))
            :else
            (throw (Exception. "Cannot focus beyond a character"))))
-   :update
+   :update*
    (fn [s spec f]
      (cond (empty? s)
            (f s)
@@ -56,10 +56,11 @@
            (clojure.core/get coll (first specs))
            :else
            (get (clojure.core/get coll (first specs)) (rest specs))))
-   :update
+   :update*
    (fn [coll [spec-el & spec-rest] f]
      (if (not-empty spec-rest)
-       (assoc coll spec-el (update (clojure.core/get coll spec-el) spec-rest f))
+       (assoc coll spec-el
+              (update* (clojure.core/get coll spec-el) spec-rest f))
        (assoc coll spec-el (f (clojure.core/get coll spec-el)))))})
 
 (extend nil
@@ -67,10 +68,10 @@
   {:get
    (fn [x specs]
      nil)
-   :update
+   :update*
    (fn [x [spec-el & spec-rest] f]
      (if (not-empty spec-rest)
-       (assoc {} spec-el (update x spec-rest f))
+       (assoc {} spec-el (update* x spec-rest f))
        (assoc {} spec-el (f x))))})
 
 (extend java.lang.Long
@@ -80,16 +81,16 @@
      (if (not-empty spec)
        (throw (Exception. "Long does not accept non-nil spec"))
        x))
-   :update
+   :update*
    (fn [x spec f]
      (if (not-empty spec)
        (throw (Exception. "Long does not accept non-nil spec"))
        (f x)))})
 
-(defn update-many [m & specfs]
+(defn update [m & specfs]
   (if (not-empty specfs)
-    (let [m (update m (first specfs) (second specfs))]
-      (apply update-many m (nthrest specfs 2)))
+    (let [m (update* m (first specfs) (second specfs))]
+      (apply update m (nthrest specfs 2)))
     m))
 
 (defn get-many [m & specs]

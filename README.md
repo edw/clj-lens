@@ -27,7 +27,7 @@
 (lens/get-many m [:a] [:c 1 0])
 ;; => (0 \F)
 
-(lens/update-many
+(lens/update
  m
  [:a] dec
  [:b] inc
