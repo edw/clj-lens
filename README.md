@@ -1,5 +1,13 @@
 # Clj-lens: a tool for focusing on values
 
+## Todo list
+
+* Implement insert
+* Implement prepend
+* Implement append
+
+## Examples
+
 ```clojure
 
 (require '[clj-lens.core :as lens])
