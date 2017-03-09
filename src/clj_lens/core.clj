@@ -9,8 +9,20 @@
 (extend clojure.lang.LongRange
   AFocusable
   {:get
-   (fn [x [spec-el & spec-rest]]
-     (get (nth x spec-el) spec-rest))})
+   (fn [x spec]
+     (if (empty? spec)
+       x
+       (get (nth x (first spec)) (rest spec))))
+   :update*
+   (fn [x spec f]
+     (if (empty? spec)
+       (f x)
+       (map-indexed
+        (fn [i el]
+          (if (= i (first spec))
+            (update el (rest spec) f)
+            el))
+        x)))})
 
 (extend clojure.lang.IPersistentMap
   AFocusable
