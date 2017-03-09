@@ -1,5 +1,9 @@
 # Clj-lens: a tool for focusing on values
 
+## Todo
+
+* Idiomatically support transducers
+
 ## Items for consideration
 
 * Implement insert
