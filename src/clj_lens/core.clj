@@ -15,13 +15,23 @@
 (extend clojure.lang.IPersistentMap
   AFocusable
   {:get
-   (fn [m [spec-el & spec-rest]]
-     (get (clojure.core/get m spec-el) spec-rest))
+   (fn [m spec]
+     (if (empty? spec)
+       m
+       (get (clojure.core/get m (first spec)) (rest spec))))
    :update*
-   (fn [m [spec-el & spec-rest] f]
-     (if (not-empty spec-rest)
-       (clojure.core/update m spec-el #(update* % spec-rest f))
-       (clojure.core/update m spec-el f)))})
+   (fn [m spec f]
+     (if (empty? spec)
+       (f m)
+       (clojure.core/update m (first spec) #(update* % (rest spec) f))))})
+
+(extend clojure.lang.APersistentSet
+  AFocusable
+  {:get
+   (fn [s spec]
+     (if (empty? spec)
+       s
+       (get (clojure.core/get s (first spec)) (rest spec))))})
 
 (defn- replace-at [s i f]
   (str (subs s 0 i) (f (.charAt s i)) (subs s (inc i))))
@@ -49,42 +59,43 @@
 (extend clojure.lang.IPersistentVector
   AFocusable
   {:get
-   (fn [coll specs]
-     (cond (empty? specs)
+   (fn [coll spec]
+     (cond (empty? spec)
            coll
-           (= 1 (count specs))
-           (clojure.core/get coll (first specs))
+           (= 1 (count spec))
+           (clojure.core/get coll (first spec))
            :else
-           (get (clojure.core/get coll (first specs)) (rest specs))))
+           (get (clojure.core/get coll (first spec)) (rest spec))))
    :update*
-   (fn [coll [spec-el & spec-rest] f]
-     (if (not-empty spec-rest)
-       (assoc coll spec-el
-              (update* (clojure.core/get coll spec-el) spec-rest f))
-       (assoc coll spec-el (f (clojure.core/get coll spec-el)))))})
+   (fn [coll spec f]
+     (if (empty? spec)
+       (f coll)
+       (assoc coll
+              (first spec)
+              (update (clojure.core/get coll (first spec)) (rest spec) f))))})
 
 (extend nil
   AFocusable
   {:get
-   (fn [x specs]
+   (fn [x spec]
      nil)
    :update*
-   (fn [x [spec-el & spec-rest] f]
-     (if (not-empty spec-rest)
-       (assoc {} spec-el (update* x spec-rest f))
-       (assoc {} spec-el (f x))))})
+   (fn [x spec f]
+     (if (empty? spec)
+       (f x)
+       (assoc {} (first spec) (update* x (rest spec) f))))})
 
-(extend java.lang.Long
+(extend java.lang.Object
   AFocusable
   {:get
    (fn [x spec]
      (if (not-empty spec)
-       (throw (Exception. "Long does not accept non-nil spec"))
+       (throw (Exception. "Object does not accept non-nil spec"))
        x))
    :update*
    (fn [x spec f]
      (if (not-empty spec)
-       (throw (Exception. "Long does not accept non-nil spec"))
+       (throw (Exception. "Object does not accept non-nil spec"))
        (f x)))})
 
 (defn update [m & specfs]
