@@ -1,8 +1,9 @@
 # Clj-lens: a tool for focusing on values
 
-## Todo
+## To-do
 
 * Idiomatically support transducers
+* Think through why all of this isn't implemented as a transducer.
 
 ## Items for consideration
 
