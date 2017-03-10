@@ -44,7 +44,21 @@
    (fn [s spec]
      (if (empty? spec)
        s
-       (get (clojure.core/get s (first spec)) (rest spec))))})
+       (get (clojure.core/get s (first spec)) (rest spec))))
+   :update*
+   (fn [s spec f]
+     (if (empty? spec)
+       (f s)
+       (clojure.core/let
+           [spec-el (first spec)
+            x (clojure.core/get s spec-el)
+            new-x (update* (clojure.core/get s spec-el) (rest spec) f)]
+         (cond (= x new-x)
+               s
+               (nil? new-x)
+               (disj s spec-el)
+               :else
+               (conj (disj s spec-el) new-x)))))})
 
 (defn- replace-at [s i f]
   (str (subs s 0 i) (f (.charAt s i)) (subs s (inc i))))

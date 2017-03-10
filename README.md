@@ -16,6 +16,37 @@ Artifacts are published on [Clojars][1].
 
 ![latest version][2]
 
+## Overview
+
+Clj-lens allows the retrieval and updating of data structures through
+path specifications that allow maps, vectors, sets, and conceivably
+any type of compound data structures.
+
+Clj-lens defines a protocol `AFocusable` containing two methods: `get`
+and `update*`. The `update*` method should not be called directly but
+through the `update` function, which allows multiple updates to be
+applied to a data structure. The `get-many` function can be used to
+retrieve a sequence of values based on zero or more path
+specifications. Finally, a `let` macro is defined that allows you to
+directly bind values to names.
+
+Looking at the defined names described above, it should be pretty
+clear that you should not `:refer` to them but should instead require
+the `clj-lens.core` namespace using a convenient name such as `lens`.
+
+Looking at the examples should make all or this transparently
+clear. If not, please complain to me by opening a Github issue.
+
+## Note on updating sets
+
+If a set member is updated, the return value of the update function is
+examined. If it is truthy, the returned value is conj'd unto the
+set--and the value associated with the path specification element
+value is disj'd from the set. If the returned value is equal to the
+path specification element value, the original set is changed. If the
+returned value is not truthy, the path specification element value is
+disj'd from the set.
+
 ## Examples
 
 ```clojure
