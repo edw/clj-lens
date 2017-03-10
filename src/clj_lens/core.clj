@@ -63,8 +63,7 @@
      (cond (empty? s)
            (f s)
            (= 1 (count spec))
-           (let [i (first spec)]
-             (replace-at s i f))
+           (replace-at s (first spec) f)
            :else
            (throw (Exception. "Cannot focus beyond a character"))))})
 
