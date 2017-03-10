@@ -1,4 +1,4 @@
-# Clj-lens: a tool for focusing on values
+# Clj-lens: Nested data structure querying and updating
 
 Have you ever wanted to update a map in an array in a map? Do you ever
 want to extract several values out of a similar data structure? Either

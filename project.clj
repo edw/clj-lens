@@ -1,5 +1,5 @@
-(defproject org.clojars.edw/clj-lens "0.1.1"
-  :description "Clj-lens: focused data extraction and updating"
+(defproject org.clojars.edw/clj-lens "0.1.2"
+  :description "Nested data structure querying and updating"
   :url "http://github.com/edw/clj-lens"
   :license {:name "Eclipse Public License"
             :url "https://github.com/edw/clj-lens/blob/master/LICENSE"}
