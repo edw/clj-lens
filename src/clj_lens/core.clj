@@ -20,7 +20,7 @@
        (map-indexed
         (fn [i el]
           (if (= i (first spec))
-            (update el (rest spec) f)
+            (update* el (rest spec) f)
             el))
         x)))})
 
@@ -83,7 +83,7 @@
        (f coll)
        (assoc coll
               (first spec)
-              (update (clojure.core/get coll (first spec)) (rest spec) f))))})
+              (update* (clojure.core/get coll (first spec)) (rest spec) f))))})
 
 (extend nil
   AFocusable
@@ -111,7 +111,7 @@
 
 (defn update [m & specfs]
   (if (not-empty specfs)
-    (let [m (update* m (first specfs) (second specfs))]
+    (clojure.core/let [m (update* m (first specfs) (second specfs))]
       (apply update m (nthrest specfs 2)))
     m))
 

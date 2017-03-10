@@ -1,4 +1,4 @@
-(defproject org.clojars.edw/clj-lens "0.1.0"
+(defproject org.clojars.edw/clj-lens "0.1.1"
   :description "Clj-lens: focused data extraction and updating"
   :url "http://github.com/edw/clj-lens"
   :license {:name "Eclipse Public License"
