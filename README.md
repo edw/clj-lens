@@ -44,12 +44,16 @@ Artifacts are published on [Clojars][1].
   (list p q r))
 ;; => (0 \F {:a 0, :b 1, :c [41 "Foocar"]}) ; Very similar to above
 
+(lens/let {:a [0 1 2]}
+  [[zero one two] [:a]]
+  (list zero one two))
+;; => (0 1 2)
+
 (lens/update
  m
  [:a] dec
  [:b] inc
  [:d :i] (fn [_] #{:clubs :diamonds :hearts :spades}))
-
 ;; =>
 ;;
 ;; {:a -1,
