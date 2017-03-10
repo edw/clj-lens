@@ -1,4 +1,3 @@
-
 (ns clj-lens.core
   (:refer-clojure :exclude [get let update]))
 

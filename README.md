@@ -94,5 +94,5 @@ disj'd from the set.
 
 ```
 
-[1]: https://clojars.org/org.clojars.edw/clj-lens
-[2]: https://clojars.org/org.clojars.edw/clj-lens/latest-version.svg
+[1]: https://clojars.org/edw/clj-lens
+[2]: https://clojars.org/edw/clj-lens/latest-version.svg
