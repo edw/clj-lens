@@ -1,14 +1,14 @@
 # Clj-lens: a tool for focusing on values
 
 Have you ever wanted to update a map in an array in a map? Do you ever
-want to extract several values out of a similar data structure? EIther
+want to extract several values out of a similar data structure? Either
 situation is a pain. And it's ugly, nesting all of those access and
 update functions into a pile a deeply-indented code. Clj-lens aspires
-to help you solve these problems in an idiomatic Clojure way.
+to help you solve these problems in an Clojure-idiomatic way.
 
-Incantation to keep the nannies at bay: Updating and even accessing
-deeply nested data may be a bad code smell. It may also represent an
-anti-pattern. Let's all write beautiful code, people.
+Obligatory incantation to keep the nannies at bay: Updating and even
+accessing deeply nested data may be a bad code smell. It may also
+represent an anti-pattern. Let's all write beautiful code, people.
 
 ## Examples
 
@@ -30,6 +30,13 @@ anti-pattern. Let's all write beautiful code, people.
 
 (lens/get-many m [:a] [:c 1 0])    ;; => (0 \F)
 (lens/get-many m [:a] [:c 1 0] []) ;; => (0 \F {:a 0, :b 1, :c [41 "Foocar"]})
+
+(lens/let-from m
+  [p [:a]
+   q [:c 1 0]
+   :as r]
+  (list p q r))
+;; => (0 \F {:a 0, :b 1, :c [41 "Foocar"]}) ; Very similar to above
 
 (lens/update
  m
