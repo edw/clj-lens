@@ -1,3 +1,4 @@
+
 (ns clj-lens.core
   (:refer-clojure :exclude [get let update]))
 
@@ -128,7 +129,7 @@
    (fn [b] (if (= :as (first b)) [] (second b)))
    (partition 2 bindings)))
 
-(defmacro let [x bindings & body]
+(defmacro let {:style/indent 2} [x bindings & body]
   (clojure.core/let [names (binding-names bindings)
                      specs (binding-specs bindings)]
     `(clojure.core/let [[~@names] (get-many ~x ~@specs)]
