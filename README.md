@@ -45,7 +45,7 @@ Artifacts are published on [Clojars][1].
 ;; => (0 \F {:a 0, :b 1, :c [41 "Foocar"]}) ; Very similar to above
 
 (lens/let {:a [0 1 2]}
-  [[zero one two] [:a]]
+    [[zero one two] [:a]]
   (list zero one two))
 ;; => (0 1 2)
 
