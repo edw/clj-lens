@@ -41,7 +41,7 @@ clear. If not, please complain to me by opening a Github issue.
 
 If a set member is updated, the return value of the update function is
 examined. If it is truthy, the returned value is conj'd unto the
-set--and the value associated with the path specification element
+set--after the value associated with the path specification element
 value is disj'd from the set. If the returned value is equal to the
 path specification element value, the original set is changed. If the
 returned value is not truthy, the path specification element value is
