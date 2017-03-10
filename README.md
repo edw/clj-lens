@@ -10,6 +10,12 @@ Obligatory incantation to keep the nannies at bay: Updating and even
 accessing deeply nested data may be a bad code smell. It may also
 represent an anti-pattern. Let's all write beautiful code, people.
 
+## Installation
+
+Artifacts are published on [Clojars][1]. 
+
+![latest version][2]
+
 ## Examples
 
 ```clojure
@@ -52,3 +58,6 @@ represent an anti-pattern. Let's all write beautiful code, people.
 ;;  :d {:i #{:spades :diamonds :clubs :hearts}}}
 
 ```
+
+[1]: https://clojars.org/org.clojars.edw/clj-lens
+[2]: https://clojars.org/org.clojars.edw/clj-lens/latest-version.svg
