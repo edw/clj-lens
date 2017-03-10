@@ -1,5 +1,5 @@
 (ns clj-lens.core
-  (:refer-clojure :exclude [get update]))
+  (:refer-clojure :exclude [get let update]))
 
 (defprotocol AFocusable
   "Something which can be focused upon"
@@ -117,3 +117,19 @@
 
 (defn get-many [m & specs]
   (map #(get m %) specs))
+
+(defn- binding-names [bindings]
+  (map
+   (fn [b] (if (= :as (first b)) (second b) (first b)))
+   (partition 2 bindings)))
+
+(defn- binding-specs [bindings]
+  (map
+   (fn [b] (if (= :as (first b)) [] (second b)))
+   (partition 2 bindings)))
+
+(defmacro let [x bindings & body]
+  (clojure.core/let [names (binding-names bindings)
+                     specs (binding-specs bindings)]
+    `(clojure.core/let [[~@names] (get-many ~x ~@specs)]
+       ~@body)))

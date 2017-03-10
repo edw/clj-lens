@@ -31,7 +31,7 @@ represent an anti-pattern. Let's all write beautiful code, people.
 (lens/get-many m [:a] [:c 1 0])    ;; => (0 \F)
 (lens/get-many m [:a] [:c 1 0] []) ;; => (0 \F {:a 0, :b 1, :c [41 "Foocar"]})
 
-(lens/let-from m
+(lens/let m
   [p [:a]
    q [:c 1 0]
    :as r]
