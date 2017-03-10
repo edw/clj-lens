@@ -38,9 +38,9 @@ Artifacts are published on [Clojars][1].
 (lens/get-many m [:a] [:c 1 0] []) ;; => (0 \F {:a 0, :b 1, :c [41 "Foocar"]})
 
 (lens/let m
-  [p [:a]
-   q [:c 1 0]
-   :as r]
+    [p [:a]
+     q [:c 1 0]
+     :as r]
   (list p q r))
 ;; => (0 \F {:a 0, :b 1, :c [41 "Foocar"]}) ; Very similar to above
 
